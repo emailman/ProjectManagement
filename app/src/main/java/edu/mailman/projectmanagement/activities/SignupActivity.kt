@@ -6,7 +6,7 @@ import android.view.WindowInsets
 import edu.mailman.projectmanagement.R
 import edu.mailman.projectmanagement.databinding.ActivitySignupBinding
 
-class SignupActivity : AppCompatActivity() {
+class SignupActivity : BaseActivity() {
     private var binding: ActivitySignupBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
