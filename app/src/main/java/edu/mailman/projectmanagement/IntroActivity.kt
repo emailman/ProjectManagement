@@ -19,11 +19,14 @@ class IntroActivity : AppCompatActivity() {
         binding?.btnSignUpIntro?.setOnClickListener {
             startActivity(Intent(this, SignupActivity::class.java))
         }
+
+        binding?.btnSignInIntro?.setOnClickListener {
+            startActivity(Intent(this, SignInActivity::class.java))
+        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
         binding = null
     }
-
 }

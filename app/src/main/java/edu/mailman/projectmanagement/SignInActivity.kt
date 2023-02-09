@@ -3,14 +3,16 @@ package edu.mailman.projectmanagement
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.WindowInsets
-import edu.mailman.projectmanagement.databinding.ActivitySignupBinding
+import edu.mailman.projectmanagement.databinding.ActivitySigninBinding
 
-class SignupActivity : AppCompatActivity() {
-    private var binding: ActivitySignupBinding? = null
+class SignInActivity : AppCompatActivity() {
+    private var binding: ActivitySigninBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        //This call the parent constructor
         super.onCreate(savedInstanceState)
-        binding = ActivitySignupBinding.inflate(layoutInflater)
+        binding = ActivitySigninBinding.inflate(layoutInflater)
         setContentView(binding?.root)
 
         window.insetsController?.hide(WindowInsets.Type.statusBars())
@@ -19,13 +21,15 @@ class SignupActivity : AppCompatActivity() {
     }
 
     private fun setupActionBar() {
-        setSupportActionBar(binding?.toolbarSignUpActivity)
+
+        setSupportActionBar(binding?.toolbarSignInActivity)
+
+
         val actionBar = supportActionBar
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true)
             actionBar.setHomeAsUpIndicator(R.drawable.ic_black_color_back_24dp)
-
-            binding?.toolbarSignUpActivity?.setNavigationOnClickListener {
+            binding?.toolbarSignInActivity?.setNavigationOnClickListener {
                 onBackPressedDispatcher.onBackPressed()
             }
         }
