@@ -1,4 +1,4 @@
-package edu.mailman.projectmanagement
+package edu.mailman.projectmanagement.activities
 
 import android.annotation.SuppressLint
 import android.content.Intent

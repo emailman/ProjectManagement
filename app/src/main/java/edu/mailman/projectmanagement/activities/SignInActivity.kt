@@ -1,8 +1,9 @@
-package edu.mailman.projectmanagement
+package edu.mailman.projectmanagement.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.WindowInsets
+import edu.mailman.projectmanagement.R
 import edu.mailman.projectmanagement.databinding.ActivitySigninBinding
 
 class SignInActivity : AppCompatActivity() {

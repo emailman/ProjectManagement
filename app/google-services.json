@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "91996179291",
+    "project_id": "projectmgmt-460fb",
+    "storage_bucket": "projectmgmt-460fb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:91996179291:android:060063d6835067a549a87e",
+        "android_client_info": {
+          "package_name": "edu.mailman"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "91996179291-ov7d888uafqklho0sdffo31qer6jgjrv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_c17VNDYrL1yf08BjknRR8XmYrrE93cY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "91996179291-ov7d888uafqklho0sdffo31qer6jgjrv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:91996179291:android:d6d5af25a8f9220549a87e",
+        "android_client_info": {
+          "package_name": "edu.mailman.projectmanagement"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "91996179291-ov7d888uafqklho0sdffo31qer6jgjrv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_c17VNDYrL1yf08BjknRR8XmYrrE93cY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "91996179291-ov7d888uafqklho0sdffo31qer6jgjrv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

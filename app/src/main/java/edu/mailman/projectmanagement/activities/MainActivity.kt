@@ -1,4 +1,4 @@
-package edu.mailman.projectmanagement
+package edu.mailman.projectmanagement.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
