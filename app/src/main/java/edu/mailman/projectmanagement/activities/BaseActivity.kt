@@ -10,7 +10,6 @@ import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import edu.mailman.projectmanagement.R
-import edu.mailman.projectmanagement.databinding.ActivityBaseBinding
 import edu.mailman.projectmanagement.databinding.DialogProgressBinding
 
 open class BaseActivity : AppCompatActivity() {
@@ -66,8 +65,8 @@ open class BaseActivity : AppCompatActivity() {
         val snackBar = Snackbar.make(
             findViewById(android.R.id.content),
             message,
-            Snackbar.LENGTH_LONG
-        )
+            Snackbar.LENGTH_LONG)
+
         val snackBarView = snackBar.view
         snackBarView.setBackgroundColor(
             ContextCompat.getColor(this,
