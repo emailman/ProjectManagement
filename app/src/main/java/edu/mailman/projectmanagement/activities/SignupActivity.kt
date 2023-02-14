@@ -7,6 +7,8 @@ import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import edu.mailman.projectmanagement.R
 import edu.mailman.projectmanagement.databinding.ActivitySignupBinding
+import edu.mailman.projectmanagement.firestore.FirestoreClass
+import edu.mailman.projectmanagement.models.User
 
 class SignupActivity : BaseActivity() {
     private var binding: ActivitySignupBinding? = null
@@ -19,6 +21,17 @@ class SignupActivity : BaseActivity() {
         window.insetsController?.hide(WindowInsets.Type.statusBars())
 
         setupActionBar()
+    }
+
+    fun userRegisteredSuccess() {
+        Toast.makeText(
+            this,
+            "You have successfully registered",
+            Toast.LENGTH_LONG
+        ).show()
+        hideProgressDialog()
+        FirebaseAuth.getInstance().signOut()
+        finish()
     }
 
     private fun setupActionBar() {
@@ -47,22 +60,15 @@ class SignupActivity : BaseActivity() {
             showProgressDialog(resources.getString(R.string.please_wait))
             FirebaseAuth.getInstance().
             createUserWithEmailAndPassword(email!!, password!!).addOnCompleteListener { task ->
-                hideProgressDialog()
                 if (task.isSuccessful) {
                     val firebaseUser = task.result!!.user!!
                     val registeredEmail = firebaseUser.email
-                    Toast.makeText(
-                        this,
-                        "$name successfully registered $registeredEmail",
-                        Toast.LENGTH_LONG
-                    ).show()
-                    FirebaseAuth.getInstance().signOut()
-                    finish()
-
+                    val user = User(firebaseUser.uid, name!!, registeredEmail!!)
+                    FirestoreClass().registerUser(this, user)
                 } else {
                     Toast.makeText(
                         this,
-                        task.exception!!.message, Toast.LENGTH_LONG
+                        "$name registration failed", Toast.LENGTH_LONG
                     ).show()
                 }
             }
