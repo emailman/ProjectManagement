@@ -9,6 +9,7 @@ import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import edu.mailman.projectmanagement.R
 import edu.mailman.projectmanagement.databinding.ActivitySigninBinding
+import edu.mailman.projectmanagement.models.User
 
 class SignInActivity : BaseActivity() {
     private var binding: ActivitySigninBinding? = null
@@ -30,6 +31,12 @@ class SignInActivity : BaseActivity() {
         }
 
         setupActionBar()
+    }
+
+    fun signInSuccess(user: User) {
+        hideProgressDialog()
+        startActivity(Intent(this, MainActivity::class.java))
+        finish()
     }
 
     private fun setupActionBar() {
