@@ -1,9 +1,11 @@
 package edu.mailman.projectmanagement.firestore
 
+import android.app.Activity
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
+import edu.mailman.projectmanagement.activities.MainActivity
 import edu.mailman.projectmanagement.activities.SignInActivity
 import edu.mailman.projectmanagement.activities.SignupActivity
 import edu.mailman.projectmanagement.models.User
@@ -32,16 +34,31 @@ class FirestoreClass {
         return currentUserId
     }
 
-    fun signInUser(activity: SignInActivity) {
+    fun signInUser(activity: Activity) {
         mFirestore.collection(Constants.USERS)
             .document(getCurrentUserId())
             .get()
             .addOnSuccessListener {document ->
                 val loggedInUser = document.toObject(User::class.java)
-                if (loggedInUser != null) {
-                    activity.signInSuccess(loggedInUser)
+
+                when (activity) {
+                    is SignInActivity -> {
+                        activity.signInSuccess(loggedInUser!!)
+                    }
+                    is MainActivity -> {
+                        activity.updateNavigationUserDetails(loggedInUser!!)
+                    }
                 }
             }.addOnFailureListener {
+                when (activity) {
+                    is SignInActivity -> {
+                        activity.hideProgressDialog()
+                    }
+                    is MainActivity -> {
+                        activity.hideProgressDialog()
+                    }
+                }
+
                 Log.e(activity.javaClass.simpleName, "Error reading document")
             }
     }

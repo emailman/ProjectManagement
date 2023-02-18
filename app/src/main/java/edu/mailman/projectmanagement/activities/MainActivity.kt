@@ -3,12 +3,17 @@ package edu.mailman.projectmanagement.activities
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.GravityCompat
+import com.bumptech.glide.Glide
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import edu.mailman.projectmanagement.R
 import edu.mailman.projectmanagement.databinding.ActivityMainBinding
+import edu.mailman.projectmanagement.firestore.FirestoreClass
+import edu.mailman.projectmanagement.models.User
 
 class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
     private var binding: ActivityMainBinding? = null
@@ -21,6 +26,8 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         setupActionBar()
 
         binding?.navView?.setNavigationItemSelectedListener(this)
+
+        FirestoreClass().signInUser(this)
     }
 
     private fun setupActionBar() {
@@ -59,6 +66,19 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     override fun onDestroy() {
         super.onDestroy()
         binding = null
+    }
+
+    fun updateNavigationUserDetails(user: User) {
+        val navUserImage = findViewById<ImageView>(R.id.nav_user_image)
+        Glide
+            .with(this)
+            .load(user.image)
+            .centerCrop()
+            .placeholder(R.drawable.ic_user_place_holder)
+            .into(navUserImage)
+
+        val userName = findViewById<TextView>(R.id.tv_username)
+        userName.text = user.name
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
