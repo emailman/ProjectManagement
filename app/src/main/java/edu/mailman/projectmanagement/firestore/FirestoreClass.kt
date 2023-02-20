@@ -6,6 +6,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import edu.mailman.projectmanagement.activities.MainActivity
+import edu.mailman.projectmanagement.activities.MyProfileActivity
 import edu.mailman.projectmanagement.activities.SignInActivity
 import edu.mailman.projectmanagement.activities.SignupActivity
 import edu.mailman.projectmanagement.models.User
@@ -26,7 +27,7 @@ class FirestoreClass {
     }
 
     fun getCurrentUserId() : String {
-        var currentUser = FirebaseAuth.getInstance().currentUser
+        val currentUser = FirebaseAuth.getInstance().currentUser
         var currentUserId = ""
         if (currentUser != null) {
             currentUserId = currentUser.uid
@@ -34,7 +35,7 @@ class FirestoreClass {
         return currentUserId
     }
 
-    fun signInUser(activity: Activity) {
+    fun loadUserData(activity: Activity) {
         mFirestore.collection(Constants.USERS)
             .document(getCurrentUserId())
             .get()
@@ -48,6 +49,9 @@ class FirestoreClass {
                     is MainActivity -> {
                         activity.updateNavigationUserDetails(loggedInUser!!)
                     }
+                    is MyProfileActivity -> {
+                        activity.setUserDataInUI(loggedInUser!!)
+                    }
                 }
             }.addOnFailureListener {
                 when (activity) {
@@ -55,6 +59,9 @@ class FirestoreClass {
                         activity.hideProgressDialog()
                     }
                     is MainActivity -> {
+                        activity.hideProgressDialog()
+                    }
+                    is MyProfileActivity -> {
                         activity.hideProgressDialog()
                     }
                 }
