@@ -11,6 +11,7 @@ import android.util.Log
 import android.webkit.MimeTypeMap
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
@@ -25,9 +26,31 @@ import java.io.IOException
 class MyProfileActivity : BaseActivity() {
     private var binding: ActivityMyProfileBinding? = null
 
+    private val startUpdateActivityAndGetResult =
+        registerForActivityResult(
+            ActivityResultContracts
+            .StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK &&
+                // result.requestCode == PICK_IMAGE_REQUEST_CODE &&
+                result.data!!.data != null) {
+                selectedImageFileUri = result.data!!.data
+                Log.i("eric", "got an image")
+
+                try {
+                    Glide
+                        .with(this@MyProfileActivity)
+                        .load(selectedImageFileUri)
+                        .centerCrop()
+                        .placeholder(R.drawable.ic_user_place_holder)
+                        .into(binding?.ivUserImage as ImageView)
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+            }
+        }
+
     companion object {
         private const val READ_STORAGE_PERMISSION_CODE = 1
-        private const val PICK_IMAGE_REQUEST_CODE = 2
     }
 
     private var selectedImageFileUri: Uri? = null
@@ -79,7 +102,6 @@ class MyProfileActivity : BaseActivity() {
             if (grantResults.isNotEmpty() &&
                     grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 showImageChooser()
-
             } else {
                 Toast.makeText(this,"Permission not allowed," +
                         " but you can allow it from Settings", Toast.LENGTH_LONG).show()
@@ -90,30 +112,7 @@ class MyProfileActivity : BaseActivity() {
     private fun showImageChooser() {
         val galleryIntent = Intent(Intent.ACTION_PICK,
         MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        startActivityForResult(galleryIntent, PICK_IMAGE_REQUEST_CODE)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        Log.i("eric", "handling activity result")
-
-        if (resultCode == Activity.RESULT_OK &&
-                requestCode == PICK_IMAGE_REQUEST_CODE &&
-                data!!.data != null) {
-            selectedImageFileUri = data.data
-            Log.i("eric", "got an image")
-
-            try {
-                Glide
-                    .with(this@MyProfileActivity)
-                    .load(selectedImageFileUri)
-                    .centerCrop()
-                    .placeholder(R.drawable.ic_user_place_holder)
-                    .into(binding?.ivUserImage as ImageView)
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-        }
+        startUpdateActivityAndGetResult.launch(galleryIntent)
     }
 
     private fun setupActionBar() {
@@ -206,6 +205,5 @@ class MyProfileActivity : BaseActivity() {
         hideProgressDialog()
         setResult(Activity.RESULT_OK)
         finish()
-
     }
 }

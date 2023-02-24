@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.GravityCompat
 import com.bumptech.glide.Glide
 import com.google.android.material.navigation.NavigationView
@@ -19,9 +20,15 @@ import edu.mailman.projectmanagement.models.User
 class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
     private var binding: ActivityMainBinding? = null
 
-    companion object{
-        const val MY_PROFILE_REQUEST_CODE = 11
-    }
+    private val startUpdateActivityAndGetResult =
+        registerForActivityResult(ActivityResultContracts
+            .StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                FirestoreClass().loadUserData(this)
+            } else {
+                Log.e("eric", "Profile update cancelled by user")
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,21 +88,11 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         userName.text = user.name
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK &&
-                requestCode == MY_PROFILE_REQUEST_CODE) {
-            FirestoreClass().loadUserData(this)
-        } else {
-            Log.e("eric", "activity request cancelled")
-        }
-    }
-
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_my_profile -> {
-                startActivityForResult(Intent(this,
-                    MyProfileActivity::class.java), MY_PROFILE_REQUEST_CODE)
+                startUpdateActivityAndGetResult.launch(Intent(this,
+                    MyProfileActivity::class.java))
             }
             R.id.nav_sign_out -> {
                 FirebaseAuth.getInstance().signOut()
