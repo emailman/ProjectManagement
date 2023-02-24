@@ -1,7 +1,9 @@
 package edu.mailman.projectmanagement.activities
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
@@ -16,6 +18,10 @@ import edu.mailman.projectmanagement.models.User
 
 class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
     private var binding: ActivityMainBinding? = null
+
+    companion object{
+        const val MY_PROFILE_REQUEST_CODE = 11
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,11 +63,6 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         }
     }
 
-    companion object {
-        private const val PROFILE_ITEM_ID: Int = 0
-        private const val SIGN_OUT_ITEM_ID: Int = 1
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         binding = null
@@ -80,10 +81,21 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         userName.text = user.name
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK &&
+                requestCode == MY_PROFILE_REQUEST_CODE) {
+            FirestoreClass().loadUserData(this)
+        } else {
+            Log.e("eric", "activity request cancelled")
+        }
+    }
+
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_my_profile -> {
-                startActivity(Intent(this, MyProfileActivity::class.java))
+                startActivityForResult(Intent(this,
+                    MyProfileActivity::class.java), MY_PROFILE_REQUEST_CODE)
             }
             R.id.nav_sign_out -> {
                 FirebaseAuth.getInstance().signOut()
