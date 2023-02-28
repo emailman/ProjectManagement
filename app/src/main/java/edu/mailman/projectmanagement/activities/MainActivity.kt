@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.GravityCompat
 import com.bumptech.glide.Glide
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import edu.mailman.projectmanagement.R
@@ -40,6 +41,11 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         binding?.navView?.setNavigationItemSelectedListener(this)
 
         FirestoreClass().loadUserData(this)
+
+        val fabCreateBoard = findViewById<FloatingActionButton>(R.id.fab_create_board)
+        fabCreateBoard.setOnClickListener {
+            startActivity(Intent(this, CreateBoardActivity::class.java))
+        }
     }
 
     private fun setupActionBar() {
