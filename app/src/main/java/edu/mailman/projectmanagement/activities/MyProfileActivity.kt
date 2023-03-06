@@ -49,9 +49,6 @@ class MyProfileActivity : BaseActivity() {
             }
         }
 
-    companion object {
-        private const val READ_STORAGE_PERMISSION_CODE = 1
-    }
 
     private var selectedImageFileUri: Uri? = null
     private var profileImageURL = ""
@@ -76,7 +73,7 @@ class MyProfileActivity : BaseActivity() {
             } else {
                 ActivityCompat.requestPermissions(this,
                 arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
-                READ_STORAGE_PERMISSION_CODE )
+                Constants.READ_STORAGE_PERMISSION_CODE )
                 Log.i("eric", "permission was requested")
             }
         }
@@ -98,7 +95,7 @@ class MyProfileActivity : BaseActivity() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
-        if (requestCode == READ_STORAGE_PERMISSION_CODE) {
+        if (requestCode == Constants.READ_STORAGE_PERMISSION_CODE) {
             if (grantResults.isNotEmpty() &&
                     grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 showImageChooser()

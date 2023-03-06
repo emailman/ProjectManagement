@@ -6,4 +6,6 @@ object Constants {
     const val IMAGE = "image"
     const val NAME = "name"
     const val MOBILE = "mobile"
+
+    const val READ_STORAGE_PERMISSION_CODE = 1
 }
