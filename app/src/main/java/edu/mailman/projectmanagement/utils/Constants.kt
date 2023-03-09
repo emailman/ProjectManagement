@@ -7,5 +7,7 @@ object Constants {
     const val NAME = "name"
     const val MOBILE = "mobile"
 
+    const val BOARDS: String = "boards"
+
     const val READ_STORAGE_PERMISSION_CODE = 1
 }

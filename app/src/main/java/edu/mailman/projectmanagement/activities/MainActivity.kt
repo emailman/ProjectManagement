@@ -17,6 +17,7 @@ import edu.mailman.projectmanagement.R
 import edu.mailman.projectmanagement.databinding.ActivityMainBinding
 import edu.mailman.projectmanagement.firestore.FirestoreClass
 import edu.mailman.projectmanagement.models.User
+import edu.mailman.projectmanagement.utils.Constants
 
 class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
     private var binding: ActivityMainBinding? = null
@@ -31,6 +32,8 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             }
         }
 
+    private lateinit var mUserName: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -43,8 +46,12 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         FirestoreClass().loadUserData(this)
 
         val fabCreateBoard = findViewById<FloatingActionButton>(R.id.fab_create_board)
+
+        // Note user name is set by calling Firestore above
         fabCreateBoard.setOnClickListener {
-            startActivity(Intent(this, CreateBoardActivity::class.java))
+            val intent = Intent(this, CreateBoardActivity::class.java)
+            intent.putExtra(Constants.NAME, mUserName)
+            startActivity(intent)
         }
     }
 
@@ -82,7 +89,10 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     fun updateNavigationUserDetails(user: User) {
+        mUserName = user.name
+
         val navUserImage = findViewById<ImageView>(R.id.nav_user_image)
+
         Glide
             .with(this)
             .load(user.image)

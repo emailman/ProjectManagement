@@ -22,12 +22,12 @@ import edu.mailman.projectmanagement.databinding.ActivityCreateBoardBinding
 import edu.mailman.projectmanagement.utils.Constants
 import java.io.IOException
 
-class CreateBoardActivity : AppCompatActivity() {
+class CreateBoardActivity : BaseActivity() {
     private var binding: ActivityCreateBoardBinding? = null
 
     private var selectedImageFileUri: Uri? = null
-    // private var profileImageURL = ""
-    // private lateinit var mUserDetails: User
+
+    private lateinit var  mUserName: String
 
     private val startUpdateActivityAndGetResult =
         registerForActivityResult(
@@ -59,6 +59,10 @@ class CreateBoardActivity : AppCompatActivity() {
 
         setupActionBar()
 
+        if (intent.hasExtra(Constants.NAME)) {
+            mUserName = intent.getStringExtra(Constants.NAME).toString()
+        }
+
         binding?.ivBoardImage?.setOnClickListener {
             if (ContextCompat.checkSelfPermission(
                     this,
@@ -78,6 +82,11 @@ class CreateBoardActivity : AppCompatActivity() {
                 Log.i("eric", "permission was requested")
             }
         }
+    }
+
+    fun boardCreatedSuccessfully() {
+        hideProgressDialog()
+        finish()
     }
 
     private fun setupActionBar() {

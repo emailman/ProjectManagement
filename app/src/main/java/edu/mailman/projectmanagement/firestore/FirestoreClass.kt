@@ -6,10 +6,8 @@ import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
-import edu.mailman.projectmanagement.activities.MainActivity
-import edu.mailman.projectmanagement.activities.MyProfileActivity
-import edu.mailman.projectmanagement.activities.SignInActivity
-import edu.mailman.projectmanagement.activities.SignupActivity
+import edu.mailman.projectmanagement.activities.*
+import edu.mailman.projectmanagement.models.Board
 import edu.mailman.projectmanagement.models.User
 import edu.mailman.projectmanagement.utils.Constants
 
@@ -34,6 +32,22 @@ class FirestoreClass {
             currentUserId = currentUser.uid
         }
         return currentUserId
+    }
+
+    fun createBoard(activity: CreateBoardActivity, board: Board) {
+        mFirestore.collection(Constants.BOARDS)
+            .document()
+            .set(board, SetOptions.merge())
+            .addOnSuccessListener {
+                Log.i("Eric", "Board created successfully")
+                Toast.makeText(activity, "Board created successfully",
+                    Toast.LENGTH_SHORT).show()
+                activity.boardCreatedSuccessfully()
+            } .addOnFailureListener {
+                exception ->
+                activity.hideProgressDialog()
+                Log.e("Eric", "Error creating board", exception)
+            }
     }
 
     fun updateUserProfileData(activity: MyProfileActivity,
